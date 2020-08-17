@@ -1,0 +1,25 @@
+/* 
+    Tests LeadProcessor Batch Processing
+    Setup creates 200 leads
+    Test runs method against test data and confirmed 200 updated
+*/
+
+@isTest
+public class LeadProcessorTest {
+	@testSetup
+    static void setup() {
+        List<Lead> leadList = new List<Lead>();
+        for (Integer i = 0; i <200; i++) {
+            leadList.add(new Lead(LastName='Jones', Company='lead' + i, LeadSource= 'web'));
+        }
+        insert leadList;
+    }
+    
+    static testmethod void test() {
+        Test.startTest();
+        LeadProcessor lp = new LeadProcessor();
+        Id batchId = Database.executeBatch(lp);
+        Test.stopTest();
+        System.assertEquals(200, [select count() from Lead where LeadSource = 'Dreamforce']);
+    }
+}

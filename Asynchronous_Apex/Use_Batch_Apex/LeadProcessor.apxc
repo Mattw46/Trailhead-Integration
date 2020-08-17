@@ -1,0 +1,27 @@
+/*
+    Update LeadSource on all Leads
+    Start fetches leads to work on
+    execute processes the list and replaces value with Dreamforce
+    the Leads are then persisted
+ */
+
+global class LeadProcessor implements
+	Database.Batchable<sObject>, Database.Stateful {
+	
+        global Database.QueryLocator start(Database.BatchableContext bc) {
+            return Database.getQueryLocator('SELECT ID, LeadSource FROM LEAD');
+        }
+        
+        global void execute(Database.BatchableContext bc, List<Lead> leadList) {
+            List<Lead> updatedList = new List<Lead>();
+            for (Lead lead : leadList) {
+                lead.LeadSource = 'Dreamforce';
+                updatedList.add(lead);
+            }
+            update updatedList;
+        }
+        
+        global void finish(Database.BatchableContext bc) {
+            
+        }
+}

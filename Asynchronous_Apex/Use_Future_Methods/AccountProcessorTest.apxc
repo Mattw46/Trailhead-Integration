@@ -1,0 +1,29 @@
+/* Test AccountProcessor class
+    create an Account and assign one Contact
+    Test with new Account Id and confirm one Contact */
+
+@IsTest
+public class AccountProcessorTest {
+	@IsTest
+    private static void TestAccounts() {
+        Account a = new Account();
+        a.Name = 'Test Account';
+        insert a;
+
+        Contact cont = new Contact();
+        cont.FirstName = 'Bob';
+        cont.LastName = 'Masters';
+        cont.AccountId = a.Id;
+        insert cont;
+
+        List<Id> acctList = new List<Id>();
+        acctList.add(a.Id);
+        
+        Test.startTest();
+        AccountProcessor.countContacts(acctList);
+        Test.stopTest();
+
+        Account acc = [SELECT Number_of_Contacts__c from Account where id = :a.id LIMIT 1];
+        System.assertEquals(Integer.ValueOf(acc.Number_of_Contacts__c),1);
+    }
+}
