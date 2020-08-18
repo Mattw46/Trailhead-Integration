@@ -1,0 +1,26 @@
+/*
+    Tests DailyLeadProcessor
+    Creates 200 leads before scheduling the class
+*/
+@IsTest
+public class DailyLeadProcessorTest {
+	 
+    public static testmethod void testLeadProcessor() {
+        List<Lead> leadList = new List<Lead>();
+        
+        for (Integer i = 0; i < 200; i++) {
+            Lead lead = new Lead();
+            lead.FirstName = 'FirstName';
+            lead.LastName = 'LastName' + i;
+            lead.Company = 'Demo' +1;
+        	leadList.add(lead);
+    	}
+        insert leadList;
+        
+        String CRON_EXP = '0 0 0 15 3 ? 2022';
+		Test.startTest();
+    	String jobId = System.schedule('Test', CRON_EXP, new DailyLeadProcessor()); 
+    	Test.stopTest();        
+    }
+        
+}

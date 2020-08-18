@@ -1,0 +1,37 @@
+/*
+    Test AddPrimaryContact
+    Create 50 Accounts with BillingState NY & CA
+    Create a Primary Contact and execute with State CA
+    Confirm 50 Accounts with contact
+*/
+
+@IsTest
+public class AddPrimaryContactTest {
+	@testSetup
+    static void setup() {
+        List<Account> accounts = new List<Account>();
+        for (Integer i = 0; i < 50; i++) {
+            accounts.add(new Account(
+                Name='NY Account' + i, 
+                BillingState='NY'
+            ));
+        }
+        for (Integer i = 0; i < 50; i++) {
+            accounts.add(new Account(
+                Name='CA Account' + i, 
+                BillingState='CA'
+            ));
+        }
+        insert accounts;
+    }
+    
+    static testmethod void testQueueable() {
+        String state = 'CA';
+        Contact contact = new Contact(FirstName='First',LastName='Last');
+        AddPrimaryContact apc = new AddPrimaryContact(contact,state);
+        Test.startTest();
+        System.enqueueJob(apc);
+        Test.stopTest();
+        System.assert([select count() from Account where BillingState = :state] == 50);
+    }
+}
