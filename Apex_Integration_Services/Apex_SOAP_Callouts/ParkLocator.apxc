@@ -1,0 +1,12 @@
+/* 
+    Call web service with a string (country) 
+   Returns an array of park names
+*/
+
+public class ParkLocator {
+    public static String[] country(String country) {
+        ParkService.ParksImplPort parks = new ParkService.ParksImplPort();
+        String[] parksname = parks.byCountry(country);
+        return parksname;
+    }
+}
