@@ -1,4 +1,20 @@
 <template>
+    <div class="wrapper">
+    <header class="header">Available Bikes</header>
+    <section class="content">
+        <div class="columns">
+        <main class="main" >
+            <c-list onproductselected={handleProductSelected}></c-list>
+        </main>
+        <aside class="sidebar-second">
+            <c-detail product-id={selectedProductId}></c-detail>
+        </aside>
+        </div>
+    </section>
+    </div>
+</template>
+
+<!--<template>
     <div>
         <div>Name: {name}</div>
         <div>Description: {description}</div>
@@ -7,4 +23,4 @@
         <div>Price: {price}</div>
         <div><img src={pictureUrl}/></div>
     </div>
-</template>
+</template>-->
